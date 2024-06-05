@@ -1,3 +1,5 @@
+import h5netcdf
+
 import streamlit as st
 import xarray as xr
 import h5netcdf
