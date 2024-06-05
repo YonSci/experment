@@ -11,6 +11,9 @@ st.write("h5netcdf version:", h5netcdf.__version__)
 st.write("netCDF4 version:", netCDF4.__version__)
 st.write("h5py version:", h5py.__version__)
 
+# Print available backends to verify installation
+st.write("Available xarray backends:", xr.backends.list_engines())
+
 # Title
 st.title("NetCDF File Uploader")
 
