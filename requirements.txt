@@ -3,3 +3,5 @@ xarray
 h5netcdf
 netCDF4
 h5py
+numpy
+pandas
