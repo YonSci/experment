@@ -1,23 +1,7 @@
-import h5netcdf
-
 import streamlit as st
+import netCDF4 as nc
 import xarray as xr
-import h5netcdf
-import netCDF4
-import h5py
 import io
-
-
-
-# Print versions to verify installation
-st.write("xarray version:", xr.__version__)
-st.write("h5netcdf version:", h5netcdf.__version__)
-st.write("netCDF4 version:", netCDF4.__version__)
-st.write("h5py version:", h5py.__version__)
-
-# Print available backends to verify installation
-st.write("Available xarray backends:", xr.backends.list_engines())
-
 
 # Title
 st.title("NetCDF File Uploader")
@@ -27,20 +11,22 @@ def load_data():
 
     # Check if a file has been uploaded
     if uploaded_file is not None:
-        # Convert the uploaded file to BytesIO
-        file = io.BytesIO(uploaded_file.read())
-        
         try:
-            # Open the file with xarray using the netcdf4 backend
-            data = xr.open_dataset(file, engine='netcdf4')
+            # Convert the uploaded file to BytesIO
+            file = io.BytesIO(uploaded_file.read())
+            
+            # Use netCDF4 to read the file
+            with nc.Dataset('dummy', mode='r', memory=file.read()) as ds:
+                # Convert netCDF4 dataset to xarray Dataset
+                data = xr.open_dataset(xr.backends.NetCDF4DataStore(ds))
 
-            # Get latitude and longitude variables
-            lon = data.coords["Longitude"]
-            lat = data.coords["Latitude"]
+                # Get latitude and longitude variables
+                lon = data.coords["Longitude"]
+                lat = data.coords["Latitude"]
 
-            # Display latitude and longitude values
-            st.write("Longitude values:", lon.values)
-            st.write("Latitude values:", lat.values)
+                # Display latitude and longitude values
+                st.write("Longitude values:", lon.values)
+                st.write("Latitude values:", lat.values)
 
         except Exception as e:
             st.error(f"Error opening dataset: {e}")
