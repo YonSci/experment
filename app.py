@@ -18,6 +18,7 @@ st.write("h5py version:", h5py.__version__)
 # Print available backends to verify installation
 st.write("Available xarray backends:", xr.backends.list_engines())
 
+
 # Title
 st.title("NetCDF File Uploader")
 
@@ -30,8 +31,8 @@ def load_data():
         file = io.BytesIO(uploaded_file.read())
         
         try:
-            # Open the file with xarray using the h5netcdf backend
-            data = xr.open_dataset(file, engine='h5netcdf')
+            # Open the file with xarray using the netcdf4 backend
+            data = xr.open_dataset(file, engine='netcdf4')
 
             # Get latitude and longitude variables
             lon = data.coords["Longitude"]
